@@ -17,8 +17,9 @@ struct ContentView: View {
     var body: some View {
         NavigationView{
             ZStack {
+                Color.clear
                 // MARK: Page Image
-                Image("magazine-front-cover")
+                Image("enhanced-image")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .cornerRadius(10)
@@ -62,6 +63,12 @@ struct ContentView: View {
                     
                 }
             }
+            )
+            .overlay(
+                InfoPanelView(scale: imageScale, offset: imageOffset)
+                    .padding(.horizontal)
+                    .padding(.bottom, 30),
+                alignment: .top
             )
         }
         .navigationViewStyle(.stack)
