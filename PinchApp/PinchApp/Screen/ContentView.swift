@@ -15,12 +15,17 @@ struct ContentView: View {
     @State private var imageOffset : CGSize = .zero
     @State private var isDrawerOpen : Bool = false
     
+    
+    let pages : [Page] = pagesData
+    
+    @State private var pageIndex : Int = 0
+    
     var body: some View {
         NavigationView{
             ZStack {
                 Color.clear
                 // MARK: Page Image
-                Image("enhanced-image")
+                Image(pages[pageIndex].imageName)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .cornerRadius(10)
@@ -148,24 +153,39 @@ struct ContentView: View {
                     Image(systemName: isDrawerOpen ? "chevron.compact.right" : "chevron.compact.left")
                         .resizable()
                         .scaledToFit()
-                        .frame(height: 50)
-                        .padding(8)
+                        .frame(height: 40)
+                        .padding(20)
                         .foregroundStyle(.secondary)
                         .onTapGesture(perform: {
                             withAnimation(.easeOut){
                                 isDrawerOpen.toggle()
                             }
                         })
+                  
+                    
+                    ForEach(pages) { page in
+                        Image(page.thumbnailName)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 80)
+                            .cornerRadius(8)
+                            .shadow(radius: 4)
+                            .opacity(isDrawerOpen ? 1 : 0)
+                            .onTapGesture(perform: {
+                                isAnimating = true
+                                pageIndex = page.id
+                            })
+                    }
                     Spacer()
                     
                 }
-                    .padding(EdgeInsets(top: 8, leading: 4, bottom: 8 , trailing: 4))
+                    .padding(EdgeInsets(top: 8 , leading: 4, bottom: 8 , trailing: 4))
                     .background(.ultraThinMaterial)
                     .cornerRadius(12)
                     .opacity(isAnimating ? 1 : 0)
-                    .frame(width: 240)
-                    .padding(.top, UIScreen.main.bounds.height / 40)
-                    .offset(x: isDrawerOpen ? 20 : 200)
+                    .frame(width: 260)
+                    .padding(.top, UIScreen.main.bounds.height / 15)
+                    .offset(x: isDrawerOpen ? 20 : 215)
                 , alignment: .topTrailing
             )
         }
