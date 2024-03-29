@@ -64,12 +64,64 @@ struct ContentView: View {
                 }
             }
             )
+            //MARK: Info Panel
             .overlay(
                 InfoPanelView(scale: imageScale, offset: imageOffset)
                     .padding(.horizontal)
                     .padding(.bottom, 30),
                 alignment: .top
             )
+            .overlay(
+                Group {
+                    HStack {
+                        // Scale Down
+                        Button {
+                            withAnimation(.spring){
+                                if imageScale > 1 {
+                                    imageScale -= 1
+                                    
+                                    if imageScale <= 1 {
+                                        resetImageState()
+                                    }
+                                }
+                            }
+                        } label: {
+                            ControlImageView(icon: "minus.magnifyingglass")
+                        }
+                      
+                        //Reset
+                        Button {
+                            resetImageState()
+                        } label: {
+                            ControlImageView(icon: "arrow.up.left.and.down.right.magnifyingglass")
+                            
+                        }
+                    
+                        //Scale Up
+                        Button {
+                            withAnimation(.spring){
+                                if imageScale <= 5 {
+                                    imageScale += 1
+                                    
+                                    if imageScale >= 5 {
+                                        resetImageState()
+                                    }
+                                }
+                            }
+                
+                        } label: {
+                            ControlImageView(icon: "plus.magnifyingglass")
+                        }
+                                         }
+                    .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(10)
+                    .opacity(isAnimating ? 1 : 0)
+                }
+                    .padding(.bottom, -15)
+                ,alignment: .bottom
+            )
+            
         }
         .navigationViewStyle(.stack)
     }
